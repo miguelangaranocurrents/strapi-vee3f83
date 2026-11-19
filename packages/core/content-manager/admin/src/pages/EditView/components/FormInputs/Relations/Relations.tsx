@@ -797,8 +797,13 @@ const RelationModalWithContext = ({
           }
           hasMoreItems={hasNextPage}
           loading={isLoadingSearchRelations || isLoadingPermissions}
-          onOpenChange={() => {
-            handleSearch(textValue ?? '');
+          onOpenChange={(isOpen) => {
+            /**
+             * Opening searches with whatever the user typed. Closing (which happens when an option
+             * is picked) clears the search, otherwise the previous term would still filter the next
+             * opening and hide the remaining entries until the debounce settles.
+             */
+            handleSearch(isOpen ? (textValue ?? '') : '');
           }}
           noOptionsMessage={() =>
             formatMessage({
